@@ -1,0 +1,34 @@
+import fetch from "node-fetch";
+
+const guildId = "zama"; // hoặc ID thật của guild zama
+
+async function getGuildData() {
+  const res = await fetch(`https://api.guild.xyz/v1/guilds/${guildId}`);
+  const data = await res.json();
+  console.log("Thông tin Guild Zama:", data);
+}
+
+getGuildData();
+import { ethers } from "ethers";
+import fetch from "node-fetch";
+
+const wallet = new ethers.Wallet("YOUR_PRIVATE_KEY");
+const address = await wallet.getAddress();
+
+// Sign message to prove ownership
+const message = "Verify wallet for Zama Guild";
+const signature = await wallet.signMessage(message);
+
+// Send to Guild API
+const res = await fetch("https://api.guild.xyz/v1/memberships", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    guildId: "zama",
+    address,
+    signature,
+  }),
+});
+
+const result = await res.json();
+console.log(result);
